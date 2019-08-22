@@ -1,0 +1,346 @@
+/* -----------------------------
+Vars
+----------------------------- */
+:root {
+    --bubble-diameter: 30px;
+    --line-thickness: 15px;
+    --mobile-padding: 10px;
+    --background-color: #E3E3E3;
+    --active-color: #3AA600;
+    --shadow-color: #C5C5C5;
+    --text-color: #858796;
+    --dist-from-border: 3px;
+}
+
+/* -----------------------------
+General
+----------------------------- */
+.progress-indicator {
+    display: -webkit-flex;
+    display: -moz-flexbox;
+    display: -ms-flexbox;
+    display: -o-flexbox;
+    display: flex;
+    position: relative;
+    -webkit-flex-direction: column;
+    -moz-flex-direction: column;
+    -ms-flex-direction: column;
+    -o-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+.progress-indicator::after {
+    --width: calc(var(--line-thickness) - 2.5px); 
+    content: '';
+    position: absolute;
+    width: var(--width);
+    height: calc(100% - var(--bubble-diameter));
+    background: var(--background-color);
+    top: calc(var(--bubble-diameter) / 2);
+    left: calc((var(--bubble-diameter) - var(--width)) / 2);
+    z-index: 2;
+}
+
+/* -----------------------------
+Children
+----------------------------- */
+.progress-indicator li {
+    position: relative;
+    list-style: none;
+    display: inherit;
+    align-items: center;
+}
+.progress-indicator li > * {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.progress-indicator li a {
+    color: var(--text-color);
+    text-decoration: underline;
+}
+.progress-indicator li:first-child {
+    padding-bottom: var(--mobile-padding);
+}
+.progress-indicator li:not(:first-child):not(:last-child) {
+    padding: var(--mobile-padding) 0;
+}
+.progress-indicator li:last-child {
+    padding-top: var(--mobile-padding);
+}
+
+/* -----------------------------
+Indicators - circle
+----------------------------- */
+.progress-indicator li::before, .progress-indicator li > *::before {
+    --width: var(--bubble-diameter);
+    content: '';
+    display: inline-block;
+    flex-shrink: 0;
+    box-sizing: content-box;
+    text-align: center;
+    line-height: var(--bubble-diameter);
+    width: var(--width);
+    height: var(--width);
+    border-radius: 50%;
+    background: var(--background-color);
+    z-index: 1;
+}
+.progress-indicator li::before {
+    margin-right: .8rem;
+    -webkit-box-shadow: inset 0 0 5px var(--shadow-color);
+    -moz-box-shadow: inset 0 0 5px var(--shadow-color);
+    -ms-box-shadow: inset 0 0 5px var(--shadow-color);
+    -o-box-shadow: inset 0 0 5px var(--shadow-color);
+    box-shadow: inset 0 0 5px var(--shadow-color);
+}
+
+.progress-indicator li > *::before {
+    --width: calc(var(--bubble-diameter) - var(--dist-from-border) * 2);
+    color: var(--text-color);
+    width: var(--width);
+    height: var(--width);
+    font-size: .8rem;
+    font-weight: bold;
+    line-height: var(--width);
+    position: absolute;
+    left: var(--dist-from-border);
+    top: calc(var(--dist-from-border) + var(--mobile-padding));
+    z-index: 5;
+}
+.progress-indicator li:first-child > *::before {
+    top: var(--dist-from-border);
+}
+
+/* -----------------------------
+Lines
+----------------------------- */
+.progress-indicator li::after, .progress-indicator li > *::after {
+    --width: var(--line-thickness);
+    content: '';
+    position: absolute;
+    top: calc(var(--mobile-padding) + var(--bubble-diameter) * 3 / 4);
+    left: calc((var(--bubble-diameter) - var(--width)) / 2);
+    width: var(--width);
+    height: calc(var(--mobile-padding) * 2 + var(--bubble-diameter) / 2);
+    background-color: var(--background-color);
+}
+.progress-indicator li::after {
+    -webkit-box-shadow: inset 0 0 5px var(--shadow-color);
+    -moz-box-shadow: inset 0 0 5px var(--shadow-color);
+    -ms-box-shadow: inset 0 0 5px var(--shadow-color);
+    -o-box-shadow: inset 0 0 5px var(--shadow-color);
+    box-shadow: inset 0 0 5px var(--shadow-color);
+}
+.progress-indicator li:first-child::after {
+    top: calc(var(--bubble-diameter) * 3 / 4);
+}
+.progress-indicator li:last-child::after {
+    content: none;
+}
+
+.progress-indicator li > *::after {
+    --width: calc(var(--line-thickness) - var(--dist-from-border) * 2);
+    left: calc((var(--bubble-diameter) - var(--width)) / 2);
+    width: var(--width);
+    z-index: 2;
+}
+.progress-indicator li:first-child > *::after {
+    top: calc(var(--bubble-diameter) * 3 / 4);
+}
+.progress-indicator li:last-child > *::after {
+    content: none;
+}
+
+/* -----------------------------
+Completed
+----------------------------- */
+.progress-indicator li.completed > *::before {
+    background: var(--active-color);
+    color: white;
+}
+.progress-indicator li.completed > *::after {
+    background: var(--active-color);
+    z-index: 3;
+}
+
+/* -----------------------------
+Active
+----------------------------- */
+.progress-indicator li.active {
+    color: var(--active-color);
+    font-weight: bolder;
+}
+.progress-indicator li.active > *::before {
+    background: var(--active-color);
+    color: white;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 12px;
+    content: '\f141' !important;
+    transform: scale(1.2, 1.2);
+    box-shadow: 0 0 3px rgba(0, 0, 0, .5);
+}
+
+/* -----------------------------
+Inidicators numbers
+----------------------------- */
+.progress-indicator li:nth-child(1):nth-last-child(-n+10) > *::before {
+    content: '1';
+}
+.progress-indicator li:nth-child(2):nth-last-child(-n+10) > *::before {
+    content: '2';
+}
+.progress-indicator li:nth-child(3):nth-last-child(-n+10) > *::before {
+    content: '3';
+}
+.progress-indicator li:nth-child(4):nth-last-child(-n+10) > *::before {
+    content: '4';
+}
+.progress-indicator li:nth-child(5):nth-last-child(-n+10) > *::before {
+    content: '5';
+}
+.progress-indicator li:nth-child(6):nth-last-child(-n+10) > *::before {
+    content: '6';
+}
+.progress-indicator li:nth-child(7):nth-last-child(-n+10) > *::before {
+    content: '7';
+}
+.progress-indicator li:nth-child(8):nth-last-child(-n+10) > *::before {
+    content: '8';
+}
+.progress-indicator li:nth-child(9):nth-last-child(-n+10) > *::before {
+    content: '9';
+}
+
+/* -----------------------------
+responsive
+----------------------------- */
+@media (min-width: 576px) {
+    
+    /* -----------------------------
+    general
+    ----------------------------- */
+    .progress-indicator {
+        -webkit-flex-direction: row;
+        -moz-flex-direction: row;
+        -ms-flex-direction: row;
+        -o-flex-direction: row;
+        flex-direction: row;
+    }
+    .progress-indicator::after {
+        --width: calc(100% - var(--bubble-diameter));
+        --height: calc(var(--line-thickness) - 2.5px);
+        width: var(--width);
+        height: var(--height);
+        top: calc(var(--bubble-diameter) / 2 - var(--height) / 2);
+        left: calc(var(--bubble-diameter) / 2);
+    }
+
+    /* -----------------------------
+    children
+    ----------------------------- */
+    .progress-indicator li {
+        flex: 2 1 0;
+        align-items: center;
+        text-align: center;
+        padding: 0 !important;
+        -webkit-flex-direction: column;
+        -moz-flex-direction: column;
+        -ms-flex-direction: column;
+        -o-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+    }
+    .progress-indicator li:first-child {
+        text-align: left;
+        align-items: flex-start;
+        flex: 1 1 0;
+    }
+    .progress-indicator li:last-child {
+        text-align: right;
+        align-items: flex-end;
+        flex: 1 1 0;
+    }
+    .progress-indicator li > * {
+        white-space: normal;
+        padding: 0 .5rem;
+    }
+    .progress-indicator li:first-child > * {
+        padding-left: 0;
+    }
+    .progress-indicator li:last-child > * {
+        padding-right: 0;
+    }
+
+    /* -----------------------------
+    Inidicators
+    ----------------------------- */
+    .progress-indicator li::before {
+        margin-right: 0;
+        margin-bottom: .5rem
+    }
+    .progress-indicator li > *::before {
+        left: calc(50% - var(--width) / 2);
+        top: var(--dist-from-border);
+    }
+    .progress-indicator li:first-child > *::before {
+        left: initial;
+        left: var(--dist-from-border);
+    }
+    .progress-indicator li:last-child > *::before {
+        left: initial;
+        right: var(--dist-from-border);
+    }
+    
+    /* -----------------------------
+    Lines
+    ----------------------------- */
+    .progress-indicator li::after {
+        --height: var(--line-thickness);
+        content: '' !important;
+        height: var(--height) !important;
+        width: 100% !important;
+        position: absolute;
+        top: calc(var(--bubble-diameter) / 2 - var(--height) / 2) !important;
+        left: 0;
+    }
+    .progress-indicator li:first-child::after {
+        width: calc(100% - var(--bubble-diameter) / 2 + 5px) !important;
+        left: calc(var(--bubble-diameter) / 2) !important;
+    }
+    .progress-indicator li:last-child::after {
+        width: calc(100% - var(--bubble-diameter) / 2 + 5px) !important;
+        right: calc(var(--bubble-diameter) / 2);
+    }
+    .progress-indicator li > *::after {
+        --width: 100%;
+        --height: calc(var(--line-thickness) - var(--dist-from-border) * 2);
+        width: var(--width);
+        height: var(--height);
+        left: 0;
+        top: calc(var(--bubble-diameter) / 2 - var(--height) / 2);
+        transform: translateX(calc(-50% + var(--bubble-diameter) / 4));
+    }
+    .progress-indicator li:first-child > *::after {
+        content: none;
+    }
+    .progress-indicator li:last-child > *::after {
+        --width: 200%;
+        content: '';
+        width: var(--width);
+        left: initial;
+        transform: none;
+        right: calc(var(--bubble-diameter) / 4);
+    }
+    
+    /* -----------------------------
+    Active
+    ----------------------------- */
+    .progress-indicator li.active >*::after {
+        background-color: var(--active-color);
+        z-index: 3;
+    }
+}
